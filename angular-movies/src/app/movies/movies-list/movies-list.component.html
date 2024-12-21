@@ -1,29 +1,37 @@
-@if(!movies) {
-<div>
-    <img src="loadingSpinner.gif" alt="">
-</div>
-} @else if (movies.length === 0) {
-<div>
-    <p>There are no movies to display</p>
-</div>
-} @else {
-@for(movie of movies; track $index) {
-<div class="movies-container">
-    <div>
-        <img [src]="movie.poster" alt="">
-    </div>
-    <div>
+<button mat-flat-button (click)="addMovie()">
+    <mat-icon>add</mat-icon>
+    Add a movie</button>
 
-        <div>
-            {{$index + 1}}) Movie: <b>{{movie.title | uppercase}}</b>
-        </div>
-        <div>
-            Release Date: {{movie.releaseDate | date:"MMMM-dd-yyyy"}}
-        </div>
-        <div>
-            Price: {{movie.price | currency}}
-        </div>
-    </div>
-</div>
-}
-}
+<app-generic-list [elements]="movies">
+    
+    <ng-container content>
+        @for(movie of movies; track $index) {
+            <div class="movies-container">
+                <div>
+                    @if(movie.poster) {
+                    <img [src]="movie.poster" alt="">
+                    }
+                    @else {
+                    <img src="blankImage.jpg" />
+                    }
+                </div>
+        
+                <div>
+                    <div>
+                        {{$index + 1}}) Movie: <b>{{movie.title | uppercase}}</b>
+                    </div>
+                    <div>
+                        Release Date: {{movie.releaseDate | date:"MMMM-dd-yyyy"}}
+                    </div>
+                    <div>
+                        Price: {{movie.price | currency}}
+                    </div>
+                    <div>
+                        <button (click)="removeMovie(movie)">Remove</button>
+                    </div>
+                </div>
+            </div>
+            }
+    </ng-container>
+</app-generic-list>
+

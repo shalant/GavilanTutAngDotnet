@@ -1,47 +1,42 @@
 import { CurrencyPipe, DatePipe, UpperCasePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { GenericListComponent } from "../../shared/components/generic-list/generic-list.component";
+import { MatButtonModule } from "@angular/material/button"
+import { MatIconModule } from "@angular/material/icon"
 
 @Component({
   selector: 'app-movies-list',
   standalone: true,
   imports: [
-    RouterOutlet,
     DatePipe,
     UpperCasePipe,
-    CurrencyPipe
-  ],
+    CurrencyPipe,
+    GenericListComponent,
+    MatButtonModule,
+    MatIconModule
+],
   templateUrl: './movies-list.component.html',
   styleUrl: './movies-list.component.css'
 })
 
 export class MoviesListComponent {
   title = 'angular-movies';
-  movies?: any[];
+  @Input({required: true})
+  movies!: any[];    
 
-  constructor() {
-    setTimeout(() => {
-      this.movies = [
-        {
-        title: 'Inside Out 2',
-        releaseDate: new Date(),
-        price: 1400.99,
-        poster: "https://upload.wikimedia.org/wikipedia/en/f/f7/Inside_Out_2_poster.jpg"
-        },
-        {
-          title: 'Moana',
-          releaseDate: new Date("2016-05-03"),
-          price: 420.00,
-          poster: "https://upload.wikimedia.org/wikipedia/en/f/f7/Inside_Out_2_poster.jpg"
-        }
-      ]
-    }, 2000)
+
+  addMovie() {
+    this.movies?.push({
+      title: 'Inception',
+      releaseDate: new Date('2012-07-03'),
+      price: 500
+    })
   }
-    
 
-
-  duplicateNumber(value: number): number {
-    return value * 2;
+  removeMovie(movie: any) {
+    let index = this.movies.findIndex((m:any) => m.title === movie.title);
+    this.movies.splice(index, 1);
   }
 
 }
