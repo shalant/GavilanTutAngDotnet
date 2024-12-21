@@ -1,24 +1,21 @@
-import { CurrencyPipe, DatePipe, NgFor, NgOptimizedImage, UpperCasePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, UpperCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MoviesListComponent } from "./movies/movies-list/movies-list.component";
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-movies-list',
   standalone: true,
   imports: [
     RouterOutlet,
     DatePipe,
     UpperCasePipe,
-    CurrencyPipe,
-    NgOptimizedImage,
-    MoviesListComponent
-],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    CurrencyPipe
+  ],
+  templateUrl: './movies-list.component.html',
+  styleUrl: './movies-list.component.css'
 })
 
-export class AppComponent {
+export class MoviesListComponent {
   title = 'angular-movies';
   movies?: any[];
 
@@ -46,4 +43,5 @@ export class AppComponent {
   duplicateNumber(value: number): number {
     return value * 2;
   }
+
 }
