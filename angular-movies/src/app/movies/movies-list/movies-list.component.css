@@ -1,12 +1,25 @@
 .movies-container {
-  border: 1px solid black;
-  margin-bottom: 1rem;
-  padding: 1rem;
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
 }
 
 .movies-container img {
   height: 250px;
   width: 170px;
+}
+
+.movie-container {
+  text-align: center;
+}
+
+p {
+  max-width: 225px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+button {
+  margin-left: 1rem;
 }

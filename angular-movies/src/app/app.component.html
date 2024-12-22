@@ -1,11 +1,9 @@
 <app-menu></app-menu>
 
-<app-rating [maxRating]="5" (rated)="processRating($event)"></app-rating>
+<!-- <app-rating [maxRating]="5" (rated)="processRating($event)"></app-rating> -->
 
-<!-- <h2>Upcoming Releases</h2>
+<div class="container">
 
-<app-movies-list [movies]="upcomingReleasesMovies"></app-movies-list>
+    <router-outlet></router-outlet>
 
-<h2>In Theaters</h2>
-
-<app-movies-list [movies]="inTheatresMovies"></app-movies-list> -->
+</div>
