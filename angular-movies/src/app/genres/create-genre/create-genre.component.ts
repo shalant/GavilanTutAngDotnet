@@ -12,7 +12,7 @@ import { GenresFormComponent } from "../genres-form/genres-form.component";
 @Component({
   selector: 'app-create-genre',
   standalone: true,
-  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, RouterLink, GenresFormComponent],
+  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, GenresFormComponent],
   templateUrl: './create-genre.component.html',
   styleUrl: './create-genre.component.css'
 })
