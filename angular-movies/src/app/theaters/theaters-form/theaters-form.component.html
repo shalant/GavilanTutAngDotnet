@@ -1,0 +1,14 @@
+<form (submit)="saveChanges()" [formGroup]="form">
+    <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput [formControl]="form.controls.name" />
+        <mat-error>{{getErrorMessagesForName()}}</mat-error>
+    </mat-form-field>
+
+    <div class="buttons-container">
+        <button mat-flat-button [disabled]="form.invalid">
+            Save Changes
+        </button>
+        <a mat-stroked-button routerLink="/theaters"></a>
+    </div>
+</form>

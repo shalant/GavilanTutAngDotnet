@@ -5,7 +5,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 
 import { Router, RouterLink } from '@angular/router';
-import { firstLetterShouldBeUpperCase } from '../../shared/functions/validations';
+import { firstLetterShouldBeUppercase } from '../../shared/functions/validations';
 import { GenreCreationDTO, GenreDTO } from '../genres.models';
 
 @Component({
@@ -20,7 +20,7 @@ export class GenresFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
 
   form = this.formBuilder.group({
-    name: ['', {validators: [Validators.required, firstLetterShouldBeUpperCase()]}]
+    name: ['', {validators: [Validators.required, firstLetterShouldBeUppercase()]}]
   })
 
   @Input()

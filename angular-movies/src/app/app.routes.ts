@@ -23,8 +23,8 @@ export const routes: Routes = [
     {path: 'actors/create', component: CreateActorComponent},
     {path: 'actors/edit/:id', component: EditActorComponent},
 
-    {path: 'theatres', component: IndexTheatersComponent},
-    {path: 'theatres/create', component: CreateTheaterComponent},
+    {path: 'theaters', component: IndexTheatersComponent},
+    {path: 'theaters/create', component: CreateTheaterComponent},
     {path: 'theaters/edit/:id', component: EditTheaterComponent},
 
     {path: 'movies/create', component: CreateMovieComponent},

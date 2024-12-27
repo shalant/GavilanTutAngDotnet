@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
-export function firstLetterShouldBeUpperCase(): ValidatorFn {
+export function firstLetterShouldBeUppercase(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const value = <string>control.value;
 
@@ -11,8 +11,25 @@ export function firstLetterShouldBeUpperCase(): ValidatorFn {
 
         if(firstLetter !== firstLetter.toUpperCase()) {
             return {
-                firstLetterShouldBeUpperCase: {
+                firstLetterShouldBeUppercase: {
                     message: 'The first letter should be uppercase'
+                }
+            };
+        }
+
+        return null;
+    }
+}
+
+export function dateCannotBeInTheFuture(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        const date = new Date(control.value);
+        const today = new Date();
+
+        if(date > today) {
+            return {
+                dateCannotBeInTheFuture: {
+                    message: 'The date cannot be in the future'
                 }
             };
         }
