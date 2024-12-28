@@ -8,6 +8,7 @@ import { MoviesListComponent } from "../movies/movies-list/movies-list.component
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
 })
+
 export class LandingPageComponent {
   upcomingReleasesMovies: any;
   inTheatresMovies: any;
@@ -26,6 +27,12 @@ export class LandingPageComponent {
           releaseDate: new Date("2016-05-03"),
           price: 420.00,
           poster: "https://upload.wikimedia.org/wikipedia/en/f/f7/Inside_Out_2_poster.jpg"
+        },
+        {
+          title: 'Bad Boys: Ride or Die',
+          releaseDate: new Date('2016-05-03'),
+          price: 300.99,
+          poster: 'https://upload.wikimedia.org/wikipedia/en/8/8b/Bad_Boys_Ride_or_Die_%282024%29_poster.jpg'
         }],
       this.upcomingReleasesMovies = [
         {
