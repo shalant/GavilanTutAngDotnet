@@ -1,6 +1,7 @@
 import { Component, Input, numberAttribute } from '@angular/core';
 import { MovieCreationDTO, MovieDTO } from '../movies.models';
 import { MoviesFormComponent } from "../movies-form/movies-form.component";
+import { MultipleSelectorDTO } from '../../shared/components/multiple-selector/MultipleSelectorDTO';
 
 @Component({
   selector: 'app-edit-movie',
@@ -10,6 +11,23 @@ import { MoviesFormComponent } from "../movies-form/movies-form.component";
   styleUrl: './edit-movie.component.css'
 })
 export class EditMovieComponent {
+
+  nonSelectedGenres: MultipleSelectorDTO[] = [
+      {key: 1, description: 'Drama'},
+      {key: 3, description: 'Comedy'},
+    ]
+  
+  selectedGenres: MultipleSelectorDTO[] = [
+    {key: 2, description: 'Action'},
+  ];
+
+  nonSelectedTheaters: MultipleSelectorDTO[] = [
+    {key: 1, description: 'Acropolis'},
+  ]
+
+  selectedTheaters: MultipleSelectorDTO[] = [
+    {key: 2, description: 'Agora Mall'},
+  ];
 
   @Input({transform: numberAttribute})
   id!: number;
