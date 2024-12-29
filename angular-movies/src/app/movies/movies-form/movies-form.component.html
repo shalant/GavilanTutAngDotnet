@@ -26,6 +26,10 @@
 
     <app-multiple-selector [selected]="selectedTheaters" [nonSelected]="nonSelectedTheaters"></app-multiple-selector>
 
+    <h4>Select Actors</h4>
+
+    <app-actors-autocomplete></app-actors-autocomplete>
+
     <div class="buttons-container">
         <button [disabled]="form.invalid" mat-flat-button type="submit">Save changes</button>
         <a routerLink="/" mat-stroked-button>Cancel</a>

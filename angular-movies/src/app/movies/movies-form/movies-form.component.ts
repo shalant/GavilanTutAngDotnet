@@ -10,10 +10,11 @@ import { RouterLink } from '@angular/router';
 import { InputImgComponent } from '../../shared/components/input-img/input-img.component';
 import { MultipleSelectorComponent } from "../../shared/components/multiple-selector/multiple-selector.component";
 import { MultipleSelectorDTO } from '../../shared/components/multiple-selector/MultipleSelectorDTO';
+import { ActorsAutocompleteComponent } from "../../actors/actors-autocomplete/actors-autocomplete.component";
 
 @Component({
   selector: 'app-movies-form',
-  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatInputModule, MatDatepickerModule, RouterLink, InputImgComponent, MultipleSelectorComponent],
+  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatInputModule, MatDatepickerModule, RouterLink, InputImgComponent, MultipleSelectorComponent, ActorsAutocompleteComponent],
   templateUrl: './movies-form.component.html',
   styleUrl: './movies-form.component.css'
 })
