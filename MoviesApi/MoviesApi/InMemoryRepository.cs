@@ -19,5 +19,11 @@ namespace MoviesApi
         {
             return _genres; 
         }
+
+        public async Task<Genre?> GetById(int id)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(3));
+            return _genres.FirstOrDefault(x => x.Id == id);
+        }
     }
 }
