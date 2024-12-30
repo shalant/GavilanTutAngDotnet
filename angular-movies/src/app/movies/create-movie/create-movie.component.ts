@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { MovieCreationDTO } from '../movies.models';
 import { MoviesFormComponent } from "../movies-form/movies-form.component";
 import { MultipleSelectorDTO } from '../../shared/components/multiple-selector/MultipleSelectorDTO';
+import { ActorsAutoCompleteDTO } from '../../actors/actors.models';
 
 @Component({
   selector: 'app-create-movie',
@@ -29,6 +30,8 @@ export class CreateMovieComponent {
   ]
 
   selectedTheaters: MultipleSelectorDTO[] = [];
+
+  selectedActors: ActorsAutoCompleteDTO[] = [];
 
   saveChanges(movie: MovieCreationDTO) {
     console.log('creating the movie', movie);

@@ -11,6 +11,7 @@ import { InputImgComponent } from '../../shared/components/input-img/input-img.c
 import { MultipleSelectorComponent } from "../../shared/components/multiple-selector/multiple-selector.component";
 import { MultipleSelectorDTO } from '../../shared/components/multiple-selector/MultipleSelectorDTO';
 import { ActorsAutocompleteComponent } from "../../actors/actors-autocomplete/actors-autocomplete.component";
+import { ActorsAutoCompleteDTO } from '../../actors/actors.models';
 
 @Component({
   selector: 'app-movies-form',
@@ -38,6 +39,9 @@ export class MoviesFormComponent implements OnInit {
 
   @Input({required: true})
   nonSelectedTheaters!: MultipleSelectorDTO[];
+
+  @Input({required: true})
+  selectedActors!: ActorsAutoCompleteDTO[];
 
   private formBuilder = inject(FormBuilder);
   form = this.formBuilder.group({
@@ -84,6 +88,8 @@ export class MoviesFormComponent implements OnInit {
     const theatersId = this.selectedTheaters.map(val => val.key);
     movie.theatersIds = theatersId;
 
+    movie.actors = this.selectedActors;
+    
     this.postForm.emit(movie);
   }
 }
