@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using MoviesApi.Entities;
 
 namespace MoviesApi.Controllers
@@ -14,7 +15,8 @@ namespace MoviesApi.Controllers
             return genres;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
+        [OutputCache]
         public async Task<ActionResult<Genre>> Get(int id)
         {
             var repository = new InMemoryRepository();
@@ -25,6 +27,12 @@ namespace MoviesApi.Controllers
             }
             return genre;
         }
+
+        [HttpGet("{name}")]
+        [OutputCache]
+        public async Task<ActionResult<Genre>> Get(string name)
+        {
+            return new Genre { Name = name };
 
         [HttpPost]
         public void Post()
