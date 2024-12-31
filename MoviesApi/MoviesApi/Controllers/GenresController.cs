@@ -5,12 +5,19 @@ using MoviesApi.Entities;
 namespace MoviesApi.Controllers
 {
     [Route("api/genres")]
+    [ApiController]
     public class GenresController : ControllerBase
     {
+        private readonly IRepository repository;
+
+        public GenresController(IRepository repository)
+        {
+            this.repository = repository;
+        }
+
         [HttpGet]
         public List<Genre> Get()
         {
-            var repository = new InMemoryRepository();
             var genres = repository.GetAllGenres();
             return genres;
         }
@@ -19,7 +26,6 @@ namespace MoviesApi.Controllers
         [OutputCache]
         public async Task<ActionResult<Genre>> Get(int id)
         {
-            var repository = new InMemoryRepository();
             var genre = await repository.GetById(id);
             if (genre == null)
             {
@@ -28,16 +34,25 @@ namespace MoviesApi.Controllers
             return genre;
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("{name}")] // api/genres/comedy?id=7
         [OutputCache]
-        public async Task<ActionResult<Genre>> Get(string name)
+        public async Task<ActionResult<Genre>> Get(string name, [FromQuery] int id)
         {
-            return new Genre { Name = name };
+            return new Genre { Id = id, Name = name };
+        }
 
         [HttpPost]
-        public void Post()
+        public ActionResult<Genre> Post([FromBody] Genre genre)
         {
+            var genreWithSameNameExists = repository.Exists(genre.Name);
 
+            if (genreWithSameNameExists)
+            {
+                return BadRequest($"There's already a genre with the name {genre.Name}");
+            }
+
+            genre.Id = 3;
+            return genre;
         }
 
         [HttpPut]

@@ -1,3 +1,5 @@
+using MoviesApi;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,6 +12,8 @@ builder.Services.AddOutputCache(options =>
 {
     options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(15);
 });
+
+builder.Services.AddTransient<IRepository, InMemoryRepository>();
 
 var app = builder.Build();
 

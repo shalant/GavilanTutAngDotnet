@@ -2,7 +2,7 @@
 
 namespace MoviesApi
 {
-    public class InMemoryRepository
+    public class InMemoryRepository : IRepository
     {
         private List<Genre> _genres;
 
@@ -24,6 +24,11 @@ namespace MoviesApi
         {
             await Task.Delay(TimeSpan.FromSeconds(3));
             return _genres.FirstOrDefault(x => x.Id == id);
+        }
+
+        public bool Exists(string name)
+        {
+            return _genres.Any(x => x.Name == name);
         }
     }
 }
