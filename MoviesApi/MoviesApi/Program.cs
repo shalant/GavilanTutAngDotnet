@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MoviesApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,11 +14,19 @@ builder.Services.AddOutputCache(options =>
     options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(60);
 });
 
-builder.Services.AddSingleton<IRepository, InMemoryRepository>();
+var allowedOrigins = builder.Configuration.GetValue<string>("AllowedOrigins")!.Split(',');
 
-builder.Services.AddTransient<TransientService>();
-builder.Services.AddScoped<ScopedService>();
-builder.Services.AddSingleton<SingletonService>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+});
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("name=DefaultConnection"));
 
 var app = builder.Build();
 
@@ -28,9 +37,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseOutputCache();
-
 app.UseHttpsRedirection();
+
+app.UseCors();
+
+app.UseOutputCache();
 
 app.UseAuthorization();
 
