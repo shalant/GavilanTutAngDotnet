@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.EntityFrameworkCore;
 using MoviesApi.DTOs;
 using MoviesApi.Entities;
+using MoviesApi.Utilities;
 
 namespace MoviesApi.Controllers
 {
@@ -27,13 +30,15 @@ namespace MoviesApi.Controllers
 
         [HttpGet]
         [OutputCache(Tags = [cacheTag])]
-        public List<Genre> Get()
+        public async Task<List<GenreDTO>> Get([FromQuery] PaginationDTO pagination)
         {
-            return new List<Genre>
-            {
-                new Genre { Id = 1, Name="Drama"},
-                new Genre { Id = 2, Name="Action"}
-            };
+            var queryable = context.Genres;
+            await HttpContext.InsertPaginationParametersInHeader(queryable);
+            return await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(pagination)
+                .ProjectTo<GenreDTO>(mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         [HttpGet("{id:int}", Name="GetGenreById")]
@@ -44,14 +49,14 @@ namespace MoviesApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreatedAtRouteResult>> Post([FromBody] GenreCreationDTO genreCreationDTO)
+        public async Task<CreatedAtRouteResult> Post([FromBody] GenreCreationDTO genreCreationDTO)
         {
             var genre = mapper.Map<Genre>(genreCreationDTO);
             context.Add(genre);
             await context.SaveChangesAsync();
             await outputCacheStore.EvictByTagAsync(cacheTag, default);
             var genreDTO = mapper.Map<GenreDTO>(genre);
-            return CreatedAtRoute("GetGenreById", new {id = genreDTO.Id}, genre);
+            return CreatedAtRoute("GetGenreById", new {id = genre.Id}, genre);
         }
 
         [HttpPut]
