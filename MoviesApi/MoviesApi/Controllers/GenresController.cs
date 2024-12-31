@@ -10,11 +10,13 @@ namespace MoviesApi.Controllers
     public class GenresController : ControllerBase
     {
         private readonly IOutputCacheStore outputCacheStore;
+        private readonly ApplicationDbContext context;
         private const string cacheTag = "genres";
 
-        public GenresController(IOutputCacheStore outputCacheStore )
+        public GenresController(IOutputCacheStore outputCacheStore, ApplicationDbContext context)
         {
             this.outputCacheStore = outputCacheStore;
+            this.context = context;
         }
 
         [HttpGet]
@@ -28,7 +30,7 @@ namespace MoviesApi.Controllers
             };
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name="GetGenreById")]
         [OutputCache(Tags = [cacheTag])]
         public async Task<ActionResult<Genre>> Get(int id)
         {
@@ -38,9 +40,10 @@ namespace MoviesApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Genre>> Post([FromBody] Genre genre)
         {
-            
+            context.Add(genre);
+            await context.SaveChangesAsync();
             await outputCacheStore.EvictByTagAsync("genres", default);
-            return genre;
+            return CreatedAtRoute("GetGenreById", new {id = genre.Id}, genre);
         }
 
         [HttpPut]

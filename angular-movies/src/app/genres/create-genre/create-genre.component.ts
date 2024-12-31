@@ -8,6 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 import { firstLetterShouldBeUppercase } from '../../shared/functions/validations';
 import { GenreCreationDTO } from '../genres.models';
 import { GenresFormComponent } from "../genres-form/genres-form.component";
+import { GenresService } from '../genres.service';
 
 @Component({
   selector: 'app-create-genre',
@@ -20,11 +21,13 @@ import { GenresFormComponent } from "../genres-form/genres-form.component";
 export class CreateGenreComponent {
 
   router = inject(Router);
+  genresService = inject(GenresService)
 
   saveChanges(genre: GenreCreationDTO) {
   // save changes
-  console.log(genre);
-    this.router.navigate(['/genres']);
+    this.genresService.create(genre).subscribe(() => {
+      this.router.navigate(['/genres']);
+    })
   }
 
 

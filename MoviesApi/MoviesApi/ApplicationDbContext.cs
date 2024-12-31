@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MoviesApi.Entities;
 
 namespace MoviesApi
 {
@@ -8,5 +9,8 @@ namespace MoviesApi
         {
             
         }
+
+        public DbSet<Genre> Genres { get; set; }
+
     }
 }
