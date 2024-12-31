@@ -30,5 +30,13 @@ namespace MoviesApi
         {
             return _genres.Any(x => x.Name == name);
         }
+
+        public int Create(Genre genre)
+        {
+            var id = _genres.Max(x => x.Id + 1);
+            genre.Id = id;
+            _genres.Add(genre);
+            return id;
+        }
     }
 }

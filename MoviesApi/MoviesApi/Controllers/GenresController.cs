@@ -9,13 +9,63 @@ namespace MoviesApi.Controllers
     public class GenresController : ControllerBase
     {
         private readonly IRepository repository;
+        private readonly TransientService transient1;
+        private readonly TransientService transient2;
+        private readonly ScopedService scoped1;
+        private readonly ScopedService scoped2;
+        private readonly SingletonService singleton;
+        private readonly IOutputCacheStore outputCacheStore;
+        private readonly IConfiguration configuration;
+        private const string cacheTag = "genres";
 
-        public GenresController(IRepository repository)
+        public GenresController(IRepository repository, 
+            TransientService transient1, TransientService transient2,
+            ScopedService scoped1, ScopedService scoped2,
+            SingletonService singleton,
+            IOutputCacheStore outputCacheStore,
+            IConfiguration configuration)
         {
             this.repository = repository;
+            this.transient1 = transient1;
+            this.transient2 = transient2;
+            this.scoped1 = scoped1;
+            this.scoped2 = scoped2;
+            this.singleton = singleton;
+            this.outputCacheStore = outputCacheStore;
+            this.configuration = configuration;
+        }
+
+        [HttpGet("get-connection-string")]
+        public IActionResult GetConnectionString()
+        {
+            var connectionString = configuration.GetValue<string>("MyConnectionString");
+            return Ok(connectionString);
+        }
+
+        [HttpGet("lifecycle-services")]
+        public IActionResult GetLifecycleServices()
+        {
+            return Ok(new
+            {
+                Transients = new
+                {
+                    transient1 = transient1.GetId(),
+                    transient2 = transient2.GetId(),
+                },
+                Scopeds = new
+                {
+                    scoped1 = scoped1.GetId(),
+                    scoped2 = scoped2.GetId(),
+                },
+                Singleton = new
+                {
+                    singleton = singleton.GetId(),
+                }
+            });
         }
 
         [HttpGet]
+        [OutputCache(Tags = [cacheTag])]
         public List<Genre> Get()
         {
             var genres = repository.GetAllGenres();
@@ -23,7 +73,7 @@ namespace MoviesApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [OutputCache]
+        [OutputCache(Tags = [cacheTag])]
         public async Task<ActionResult<Genre>> Get(int id)
         {
             var genre = await repository.GetById(id);
@@ -35,14 +85,14 @@ namespace MoviesApi.Controllers
         }
 
         [HttpGet("{name}")] // api/genres/comedy?id=7
-        [OutputCache]
+        [OutputCache(Tags = [cacheTag])]
         public async Task<ActionResult<Genre>> Get(string name, [FromQuery] int id)
         {
             return new Genre { Id = id, Name = name };
         }
 
         [HttpPost]
-        public ActionResult<Genre> Post([FromBody] Genre genre)
+        public async Task<ActionResult<Genre>> Post([FromBody] Genre genre)
         {
             var genreWithSameNameExists = repository.Exists(genre.Name);
 
@@ -51,7 +101,8 @@ namespace MoviesApi.Controllers
                 return BadRequest($"There's already a genre with the name {genre.Name}");
             }
 
-            genre.Id = 3;
+            repository.Create(genre);
+            await outputCacheStore.EvictByTagAsync("genres", default);
             return genre;
         }
 
