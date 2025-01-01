@@ -43,4 +43,10 @@ export class IndexActorsComponent {
     this.pagination = {page: data.pageIndex + 1, recordsPerPage: data.pageSize};
     this.loadRecords();
   }
+
+  delete(id: number) {
+    this.actorsService.delete(id).subscribe(() => {
+      this.loadRecords();
+    })
+  }
 }

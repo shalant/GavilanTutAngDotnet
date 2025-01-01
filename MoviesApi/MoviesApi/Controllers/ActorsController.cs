@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 using MoviesApi.DTOs;
@@ -96,6 +97,23 @@ namespace MoviesApi.Controllers
 
             await context.SaveChangesAsync();
             await outputCacheStore.EvictByTagAsync(cacheTag, default);
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var actor = await context.Actors.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(actor is null)
+            {
+                return NotFound();
+            }
+
+            context.Remove(actor);
+            await context.SaveChangesAsync();
+            await outputCacheStore.EvictByTagAsync(cacheTag, default);
+            await fileStorage.Delete(actor.Picture, container);
             return NoContent();
         }
     }

@@ -23,6 +23,7 @@
                 <td mat-cell *matCellDef="let element">
                     <a mat-flat-button routerLink="/actors/edit/{{element.id}}">Edit</a>
                     <button mat-flat-button color="warn"
+                    (confirm)="delete(element.id)"
                     [swal]="{title: 'Confirmation', text: 'Are you sure you want to delete this record?',
                         showCancelButton: true
                     }">Delete</button>
