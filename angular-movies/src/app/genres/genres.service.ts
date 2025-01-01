@@ -34,4 +34,8 @@ export class GenresService {
   public create(genre: GenreCreationDTO) {
     return this.http.post(this.baseUrl, genre);
   }
+
+  public delete(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
 }

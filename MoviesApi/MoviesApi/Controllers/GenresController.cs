@@ -87,7 +87,19 @@ namespace MoviesApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        public void Delete() { }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id) 
+        { 
+            var deletedRecords = await context.Genres.Where(x => x.Id == id).ExecuteDeleteAsync();
+
+            if(deletedRecords == 0)
+            {
+                return NotFound();
+            }
+
+            await outputCacheStore.EvictByTagAsync(cacheTag, default);
+            return NoContent();
+
+        }
     }
 }
