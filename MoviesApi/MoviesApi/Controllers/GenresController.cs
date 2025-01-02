@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.OutputCaching;
-using Microsoft.EntityFrameworkCore;
 using MoviesApi.DTOs;
 using MoviesApi.Entities;
-using MoviesApi.Utilities;
 
 namespace MoviesApi.Controllers
 {
