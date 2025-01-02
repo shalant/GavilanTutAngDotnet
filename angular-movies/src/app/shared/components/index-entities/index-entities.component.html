@@ -1,6 +1,6 @@
 <h2>{{title}}</h2>
 
-<button mat-flat-button routerLink="{{createRoute}}">
+<button mat-flat-button routerLink="{{createRoute}}" color="warn">
     <mat-icon>add</mat-icon>Create New
 </button>
 
@@ -13,7 +13,7 @@
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef>Actions</th>
                         <td mat-cell *matCellDef="let element">
-                            <a mat-flat-button routerLink="{{editRoute}} + '/' + {{element.id}}">Edit</a>
+                            <a mat-flat-button routerLink="{{editRoute + '/' + element.id}}">Edit</a>
                             <button mat-flat-button color="warn" 
                             [swal]="{title: 'Confirmation', text: 'Are you sure you want to delete this record',
                                 showCancelButton:true
@@ -23,7 +23,7 @@
                     </ng-container>
                 } @else {
                     <ng-container matColumnDef="{{column}}">
-                        <th mat-header-cell *matHeaderCellDef>{{column}}</th>
+                        <th mat-header-cell *matHeaderCellDef>{{firstLetterToUppercase(column)}}</th>
                         <td mat-cell *matCellDef="let element">{{element[column]}}</td>
                     </ng-container>
                 }
