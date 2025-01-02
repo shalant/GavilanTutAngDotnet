@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MoviesApi.DTOs;
 using System.ComponentModel.DataAnnotations;
 
 namespace MoviesApi.Entities
 {
-    public class Actor
+    public class Actor: IId
     {
         public int Id { get; set; }
 
