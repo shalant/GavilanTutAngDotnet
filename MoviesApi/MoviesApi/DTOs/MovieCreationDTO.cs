@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MoviesApi.Utilities;
 using System.ComponentModel.DataAnnotations;
 
 namespace MoviesApi.DTOs
@@ -11,5 +13,14 @@ namespace MoviesApi.DTOs
         public string? Trailer { get; set; }
         public DateTime ReleaseDate { get; set; }
         public IFormFile? Poster { get; set; }
+
+        [ModelBinder(BinderType = typeof(TypeBinder))]
+        public List<int>? GenresIds { get; set; }
+        
+        [ModelBinder(BinderType = typeof(TypeBinder))]
+        public List<int>? TheatersIds { get; set; }
+        
+        [ModelBinder(BinderType = typeof(TypeBinder))]
+        public List<ActorMovieCreationDTO>? Actors { get; set; }
     }
 }
