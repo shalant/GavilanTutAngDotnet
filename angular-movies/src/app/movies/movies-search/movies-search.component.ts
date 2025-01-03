@@ -11,10 +11,16 @@ import { MoviesSearchDTO } from './movies-search.models';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { GenresService } from '../../genres/genres.service';
+import { MovieDTO } from '../movies.models';
+import { MoviesService } from '../movies.service';
+import { PaginationDTO } from '../../shared/models/PaginationDTO';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-movies-search',
-  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, MatSelectModule, MoviesListComponent],
+  imports: [MatButtonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, 
+    MatCheckboxModule, MatSelectModule, MoviesListComponent, MatPaginatorModule],
   templateUrl: './movies-search.component.html',
   styleUrl: './movies-search.component.css'
 })
@@ -24,14 +30,20 @@ export class MoviesSearchComponent implements OnInit {
   activatedRoute = inject(ActivatedRoute);
   location = inject(Location);
   genresService = inject(GenresService);
+  moviesService = inject(MoviesService);
+  pagination: PaginationDTO = {page: 1, recordsPerPage: 5};
+  totalRecordsCount!: number;
 
   ngOnInit(): void {
     this.genresService.getAll().subscribe(genres => {
       this.genres = genres;
       this.readValuesFromURL();
       this.filterMovies(this.form.value as MoviesSearchDTO);
-      this.form.valueChanges.subscribe(values => {
-        this.movies = this.moviesOriginal;
+      this.form.valueChanges
+        .pipe(
+          debounceTime(300)
+        )
+        .subscribe(values => {
         this.filterMovies(values as MoviesSearchDTO);
         this.writeParameterInTheURL();
       })
@@ -87,21 +99,18 @@ export class MoviesSearchComponent implements OnInit {
   }
 
   filterMovies(values: MoviesSearchDTO) {
-    if(values.title) {
-      this.movies = this.movies.filter(movie => movie.title.indexOf(values.title) !== -1);
-    }
+    values.page = this.pagination.page;
+    values.recordsPerPage = this.pagination.recordsPerPage;
+    this.moviesService.filter(values).subscribe(response => {
+      this.movies = response.body as MovieDTO[];
+      const header = response.headers.get('total-records-count') as string;
+      this.totalRecordsCount = parseInt(header, 10);
+    });
+  }
 
-    if(values.genreId !== 0) {
-      this.movies = this.movies.filter(movie => movie.genres.indexOf(values.genreId) !== -1)
-    }
-  
-    if(values.upcomingReleases) {
-      this.movies = this.movies.filter(movie => movie.upcomingReleases)
-    }
-  
-    if(values.inTheaters) {
-      this.movies = this.movies.filter(movie => movie.inTheaters)
-    }
+  handlePagination(data: PageEvent) {
+    this.pagination = {page:data.pageIndex + 1, recordsPerPage: data.pageSize};
+    this.filterMovies(this.form.value as MoviesSearchDTO);
   }
 
   private formBuilder = inject(FormBuilder);
@@ -117,55 +126,7 @@ export class MoviesSearchComponent implements OnInit {
   // upComingReleasesMovies: any;
   // inTheatersMovies: any;
 
-  moviesOriginal = [
-        {
-        title: 'Inside Out',
-        releaseDate: new Date(),
-        price: 1400.99,
-        poster: "https://upload.wikimedia.org/wikipedia/en/f/f7/Inside_Out_2_poster.jpg",
-        genres: [1,2,3],
-        upcomingReleases: true,
-        inTheaters: false
-        },
-        {
-          title: 'Moana',
-          releaseDate: new Date("2016-05-03"),
-          price: 420.00,
-          poster: "https://upload.wikimedia.org/wikipedia/en/f/f7/Inside_Out_2_poster.jpg",
-          genres: [3],
-          upcomingReleases: false,
-          inTheaters: false
-        },
-        {
-          title: 'Inside Out 2',
-          releaseDate: new Date(),
-          price: 1400.99,
-          poster: "https://upload.wikimedia.org/wikipedia/en/f/f7/Inside_Out_2_poster.jpg",
-          genres: [1,2],
-          upcomingReleases: false,
-          inTheaters: false
-        },
-        {
-          title: 'Moana 2',
-          releaseDate: new Date("2016-05-03"),
-          price: 420.00,
-          poster: "https://upload.wikimedia.org/wikipedia/en/f/f7/Inside_Out_2_poster.jpg",
-          genres: [1,3],
-          upcomingReleases: true,
-          inTheaters: true
-        },
-        {
-          title: 'Bad Boys: Ride or Die',
-          releaseDate: new Date('2016-05-03'),
-          price: 300.99,
-          poster: 'https://upload.wikimedia.org/wikipedia/en/8/8b/Bad_Boys_Ride_or_Die_%282024%29_poster.jpg',
-          genres: [1,2,3],
-          upcomingReleases: true,
-          inTheaters: true
-        }
-      ];
-
-  movies = this.moviesOriginal;
+  movies!: MovieDTO[];
 
   clear() {
     this.form.patchValue(
