@@ -10,6 +10,7 @@ import { MoviesListComponent } from "../movies-list/movies-list.component";
 import { MoviesSearchDTO } from './movies-search.models';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { GenresService } from '../../genres/genres.service';
 
 @Component({
   selector: 'app-movies-search',
@@ -21,16 +22,19 @@ import { Location } from '@angular/common';
 export class MoviesSearchComponent implements OnInit {
 
   activatedRoute = inject(ActivatedRoute);
-
   location = inject(Location);
+  genresService = inject(GenresService);
 
   ngOnInit(): void {
-    this.readValuesFromURL();
-    this.filterMovies(this.form.value as MoviesSearchDTO);
-    this.form.valueChanges.subscribe(values => {
-      this.movies = this.moviesOriginal;
-      this.filterMovies(values as MoviesSearchDTO);
-      this.writeParameterInTheURL();
+    this.genresService.getAll().subscribe(genres => {
+      this.genres = genres;
+      this.readValuesFromURL();
+      this.filterMovies(this.form.value as MoviesSearchDTO);
+      this.form.valueChanges.subscribe(values => {
+        this.movies = this.moviesOriginal;
+        this.filterMovies(values as MoviesSearchDTO);
+        this.writeParameterInTheURL();
+      })
     })
   }
 
@@ -109,14 +113,9 @@ export class MoviesSearchComponent implements OnInit {
     inTheaters: false
   })
 
-  genres: GenreDTO[] = [
-    {id: 1, name: 'Comedy'},
-    {id: 2, name: 'Action'},
-    {id: 3, name: 'Drama'}
-  ]
-
-  upComingReleasesMovies: any;
-  inTheatersMovies: any;
+  genres!: GenreDTO[];
+  // upComingReleasesMovies: any;
+  // inTheatersMovies: any;
 
   moviesOriginal = [
         {

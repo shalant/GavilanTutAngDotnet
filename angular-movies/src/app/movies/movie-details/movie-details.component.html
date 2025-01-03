@@ -18,6 +18,31 @@
                 ></iframe>
             }
         </div>
+
+        @if(movie.actors) {
+            <div style="margin-top: 1rem;">
+                <h3>Actors</h3>
+                <div>
+                    @for(actor of movie.actors; track $index) {
+                        <div style="margin-bottom: 2px;">
+                            <img [src]="actor.picture" style="width:50px;vertical-align: middle;" />
+                            <span style="display:inline-block;width: 200px;margin-left:1rem;">
+                                {{actor.name}}
+                            </span>
+                            <span style="display:inline-block;width:45px;">...</span>
+                            <span>{{actor.character}}</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        
+        @if(movie.theaters) {
+            <div>
+                <h3>Being displayed at the following theatres</h3>
+                <app-map [readOnlyMode]="true" [initialCoordinates]="coordinates"></app-map>
+            </div>
+        }
     </div>
 } @else {
     <app-loading></app-loading>}
