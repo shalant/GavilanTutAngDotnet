@@ -12,6 +12,7 @@ import { EditGenreComponent } from './genres/edit-genre/edit-genre.component';
 import { EditActorComponent } from './actors/edit-actor/edit-actor.component';
 import { EditTheaterComponent } from './theaters/edit-theater/edit-theater.component';
 import { MoviesSearchComponent } from './movies/movies-search/movies-search.component';
+import { MovieDetailsComponent } from './movies/movie-details/movie-details.component';
 
 export const routes: Routes = [
     {path: '', component: LandingPageComponent},
@@ -32,6 +33,7 @@ export const routes: Routes = [
     {path: 'movies/create', component: CreateMovieComponent},
     {path: 'movies/edit/:id', component: EditMovieComponent},
     {path: 'movies/edit/:id', component: EditMovieComponent},
+    {path: 'movies/:id', component: MovieDetailsComponent},
 
     {path: '**', redirectTo: ''}
 ];

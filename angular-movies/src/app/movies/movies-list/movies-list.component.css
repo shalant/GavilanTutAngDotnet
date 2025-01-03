@@ -20,6 +20,10 @@ p {
   font-weight: bold;
 }
 
+a {
+  text-decoration: none;
+}
+
 button {
   margin-left: 1rem;
 }
