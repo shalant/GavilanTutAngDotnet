@@ -24,9 +24,10 @@ namespace MoviesApi.Utilities
                 .ForMember(ent => ent.MoviesTheaters, dto =>
                     dto.MapFrom(p => p.TheatersIds!.Select(id => new MovieTheater { TheaterId = id })))
                 .ForMember(ent => ent.MoviesActors, dto =>
-                    dto.MapFrom(p => p.Actors!.Select(actor => new MovieActor { ActorId = actor.Id, Character = actor.Character })));
+                    dto.MapFrom(p => p.Actors!.Select(actor => 
+                    new MovieActor { ActorId = actor.Id, Character = actor.Character })));
 
-            CreateMap<Movie, MovieCreationDTO>();
+            CreateMap<Movie, MovieDTO>();
         }
 
         private void ConfigureTheaters(GeometryFactory geometryFactory)
@@ -45,6 +46,7 @@ namespace MoviesApi.Utilities
             CreateMap<ActorCreationDTO, Actor>()
                 .ForMember(x => x.Picture, options => options.Ignore());
             CreateMap<Actor, ActorDTO>();
+            CreateMap<Actor, MovieActorDTO>();
         }
 
         private void ConfigureGenres()

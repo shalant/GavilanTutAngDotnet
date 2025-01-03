@@ -38,8 +38,14 @@ namespace MoviesApi.Controllers
         [HttpGet("postget")]
         public async Task<ActionResult<MoviesPostGetDTO>> PostGet()
         {
-            var genres = await context.Genres.ProjectTo<GenreDTO>(mapper.ConfigurationProvider).ToListAsync();
-            var theaters = await context.Theaters.ProjectTo<TheaterDTO>(mapper.ConfigurationProvider).ToListAsync();
+            var genres = await context.Genres
+                .OrderBy(g => g.Name)
+                .ProjectTo<GenreDTO>(mapper.ConfigurationProvider)
+                .ToListAsync();
+            var theaters = await context.Theaters
+                .OrderBy(t => t.Name)
+                .ProjectTo<TheaterDTO>(mapper.ConfigurationProvider)
+                .ToListAsync();
 
             return new MoviesPostGetDTO { Theaters = theaters, Genres = genres };
         }
