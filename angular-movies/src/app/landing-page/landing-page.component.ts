@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { MoviesListComponent } from "../movies/movies-list/movies-list.component";
 import { MoviesService } from '../movies/movies.service';
+import { AuthorizedComponent } from "../security/authorized/authorized.component";
 
 @Component({
   selector: 'app-landing-page',
   standalone:true,
-  imports: [MoviesListComponent],
+  imports: [MoviesListComponent, AuthorizedComponent],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
 })

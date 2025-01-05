@@ -7,16 +7,22 @@
     <div>
         <a routerLink='movies/search' mat-button>Search for Movies</a>
     </div>
-    <div>
-        <a routerLink='genres' mat-button>Genres</a>
-    </div>
-    <div>
-        <a routerLink='actors' mat-button>Actors</a>
-    </div>
-    <div>
-        <a routerLink='theaters' mat-button>Theaters</a>
-    </div>
-    <div>
-        <a routerLink='movies/create' mat-button>Movies</a>
-    </div>
+
+    <app-authorized role="admin">
+        <ng-container authorized>
+            <div>
+                <a routerLink='genres' mat-button>Genres</a>
+            </div>
+            <div>
+                <a routerLink='actors' mat-button>Actors</a>
+            </div>
+            <div>
+                <a routerLink='theaters' mat-button>Theaters</a>
+            </div>
+            <div>
+                <a routerLink='movies/create' mat-button>Create Movies</a>
+            </div>
+        </ng-container>
+    </app-authorized>
+   
 </mat-toolbar>
